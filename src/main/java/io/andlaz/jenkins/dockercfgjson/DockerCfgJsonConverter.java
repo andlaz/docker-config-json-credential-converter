@@ -113,7 +113,7 @@ public class DockerCfgJsonConverter extends SecretToCredentialConverter {
     public IdCredentials convert(Secret secret) throws CredentialsConvertionException {
         if (secret.getData().containsKey(DATA_KEY)) {
             try {
-                PartialDockerConfiguration dockerConfiguration = mapper.readValue(SecretUtils.getNonNullSecretData(secret, DATA_KEY, ".dockercfgjson field is missing"), PartialDockerConfiguration.class);
+                PartialDockerConfiguration dockerConfiguration = mapper.readValue(decodeBase64(SecretUtils.getNonNullSecretData(secret, DATA_KEY, ".dockercfgjson field is missing"), ".dockercfgjson field failed to base64 decode to UTF8"), PartialDockerConfiguration.class);
 
                 if (dockerConfiguration.auths.size() == 1) {
                     // safe because of check above

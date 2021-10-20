@@ -9,9 +9,12 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.andlaz.jenkins.dockercfgjson.DockerCfgJsonConverter.*;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Collections;
 
 import static org.mockito.Mockito.*;
@@ -46,7 +49,7 @@ public class DockerCfgJsonConverterTest {
         Secret secret = mock(Secret.class);
         when(secret.getMetadata()).thenReturn(secretMeta);
         when(secretMeta.getAnnotations()).thenReturn(null);
-        when(secret.getData()).thenReturn(Collections.singletonMap(DockerCfgJsonConverter.DATA_KEY, "i'm totally json"));
+        when(secret.getData()).thenReturn(Collections.singletonMap(DockerCfgJsonConverter.DATA_KEY, Base64.getEncoder().encodeToString("i'm totally json".getBytes(StandardCharsets.UTF_8))));
 
         converter.convert(secret);
 
@@ -60,7 +63,7 @@ public class DockerCfgJsonConverterTest {
         Secret secret = mock(Secret.class);
         when(secret.getMetadata()).thenReturn(secretMeta);
         when(secretMeta.getAnnotations()).thenReturn(null);
-        when(secret.getData()).thenReturn(Collections.singletonMap(DockerCfgJsonConverter.DATA_KEY, "{\"foo\":\"bar\"}"));
+        when(secret.getData()).thenReturn(Collections.singletonMap(DockerCfgJsonConverter.DATA_KEY, Base64.getEncoder().encodeToString("{\"foo\":\"bar\"}".getBytes(StandardCharsets.UTF_8))));
 
         converter.convert(secret);
 
@@ -75,23 +78,23 @@ public class DockerCfgJsonConverterTest {
         when(secret.getMetadata()).thenReturn(secretMeta);
         when(secretMeta.getAnnotations()).thenReturn(null);
         when(secret.getData()).thenReturn(Collections.singletonMap(DockerCfgJsonConverter.DATA_KEY,
-                "{" +
-                    "\"auths\": {" +
+                Base64.getEncoder().encodeToString(("{" +
+                        "\"auths\": {" +
                         "\"foo\": {" +
-                            "\"username\": \"some-user\"," +
-                            "\"password\": \"some-password\"," +
-                            "\"email\": \"someone@somewhere.tld\"," +
-                            "\"auth\": \"c29tZS11c2VyOnNvbWUtcGFzc3dvcmQ=\"" +
+                        "\"username\": \"some-user\"," +
+                        "\"password\": \"some-password\"," +
+                        "\"email\": \"someone@somewhere.tld\"," +
+                        "\"auth\": \"c29tZS11c2VyOnNvbWUtcGFzc3dvcmQ=\"" +
                         "}, " +
                         "\"bar\": {" +
-                            "\"username\": \"some-user\"," +
-                            "\"password\": \"some-password\"," +
-                            "\"email\": \"someone@somewhere.tld\"," +
-                            "\"auth\": \"c29tZS11c2VyOnNvbWUtcGFzc3dvcmQ=\"" +
+                        "\"username\": \"some-user\"," +
+                        "\"password\": \"some-password\"," +
+                        "\"email\": \"someone@somewhere.tld\"," +
+                        "\"auth\": \"c29tZS11c2VyOnNvbWUtcGFzc3dvcmQ=\"" +
                         "}" +
-                    "}" +
-                "}"
-                ));
+                        "}" +
+                        "}").getBytes(StandardCharsets.UTF_8))
+        ));
 
         converter.convert(secret);
 
@@ -107,7 +110,7 @@ public class DockerCfgJsonConverterTest {
         when(secret.getMetadata()).thenReturn(secretMeta);
         when(secretMeta.getName()).thenReturn("some-secret");
         when(secret.getData()).thenReturn(Collections.singletonMap(DockerCfgJsonConverter.DATA_KEY,
-                "{" +
+                Base64.getEncoder().encodeToString(("{" +
                         "\"auths\": {" +
                         "\"foo\": {" +
                         "\"username\": \"c29tZS11c2Vy\"," + // some-user
@@ -116,7 +119,7 @@ public class DockerCfgJsonConverterTest {
                         "\"auth\": \"c29tZS11c2VyOnNvbWUtcGFzc3dvcmQ=\"" +
                         "}" +
                         "}" +
-                "}"
+                "}").getBytes(StandardCharsets.UTF_8))
         ));
 
         IdCredentials idCredential = converter.convert(secret);
