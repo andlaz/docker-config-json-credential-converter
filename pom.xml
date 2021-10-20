@@ -9,7 +9,7 @@
     </parent>
     <groupId>io.andlaz.jenkins.dockercfgjson</groupId>
     <artifactId>docker-config-json-credential-converter</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
     <packaging>hpi</packaging>
     <properties>
         <revision>1.0</revision>
