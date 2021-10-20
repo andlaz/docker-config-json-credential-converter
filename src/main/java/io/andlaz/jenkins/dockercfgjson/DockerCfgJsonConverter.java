@@ -122,8 +122,8 @@ public class DockerCfgJsonConverter extends SecretToCredentialConverter {
                             CredentialsScope.GLOBAL,
                             SecretUtils.getCredentialId(secret),
                             SecretUtils.getCredentialDescription(secret),
-                            decodeBase64(auth.getUsername(), "Not a valid username"),
-                            decodeBase64(auth.getPassword(), "Not a valid password")
+                            auth.getUsername(),
+                            auth.getPassword()
                     );
 
                 } else {
