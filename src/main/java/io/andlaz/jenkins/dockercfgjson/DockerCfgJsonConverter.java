@@ -33,7 +33,7 @@ public class DockerCfgJsonConverter extends SecretToCredentialConverter {
     }
 
     public static final String TYPE_ALIAS = "dockerConfigJson";
-    public static final String DATA_KEY = ".dockerConfigJson";
+    public static final String DATA_KEY = ".dockerconfigjson";
 
     public static final class PartialDockerConfiguration {
 
